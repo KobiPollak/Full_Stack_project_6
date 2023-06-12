@@ -1,5 +1,6 @@
 import React , {useState, useEffect} from "react";
 import { useNavigate } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import '../styles/login.css'
 
@@ -12,6 +13,15 @@ const Login = () => {
     const handleChange = event => {
       const { name, value } = event.target;
       setFormValues(prevState => ({ ...prevState, [name]: value }));
+    }
+
+    const handleNavigation = event => {
+      console.log(event.target.name)
+      if (event.target.name === "up"){
+        navigate('/register');
+      } else {
+        navigate('/login');
+      }
     }
 
     const handleSubmit = event => {
@@ -47,10 +57,15 @@ const Login = () => {
 
 
     return (
+      <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}>
         <form onSubmit={handleSubmit} className="form-box">
           <div class="btn-field">
-              <button type="button" class="disable" id="signup">Sign Up</button>
-              <button type="button"  id="signin">Sign In</button>
+              <button type="button" class="disable" id="signup" name="up" onClick={handleNavigation}>Sign Up</button>
+              <button type="button"  id="signin" name="in" onClick={handleNavigation}>Sign In</button>
           </div>
           <label>
             Username:
@@ -66,6 +81,7 @@ const Login = () => {
           <button type="submit" className=" connect">Log in</button>
           </div>
         </form>
+        </motion.div>
       );
 }
 

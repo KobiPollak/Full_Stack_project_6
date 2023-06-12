@@ -6,14 +6,14 @@ import React, {useEffect} from 'react';
 
 import NotFound from './components/notfound';
 import Login from './components/login';
-import Logup from './components/logup';
+import Logup from './components/register';
 
 function App() {
   return (
     <BrowserRouter>
     <Routes>
       <Route exact path='/login' element={<Login />}/>
-      <Route exact path='/logup' element={<Logup />}/>
+      <Route exact path='/register' element={<Logup />}/>
       {/* <Route path='/login' element={<Login />} /> */}
       {/* <Route path='/application/:id' element={<Application />} >
         <Route index path="/application/:id/info" element={<Info />} />
