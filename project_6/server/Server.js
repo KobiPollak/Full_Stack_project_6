@@ -1,6 +1,10 @@
 var mysql = require('mysql2');
 var express = require('express');
+const bodyParser = require('body-parser');
+
 const app = express()
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 
 var con = mysql.createConnection({
@@ -66,6 +70,32 @@ var con = mysql.createConnection({
         console.log(results);
         res.send(JSON.stringify(results));
     })
+  })
+
+  app.post('register', (req, res) => {
+    const { userName, password, name,  phone, email, address, website, company} = req.body;
+    const checkUsernameQuery = `SELECT * FROM users WHERE userName=${userName}`;
+    con.query(checkUsernameQuery, function(err, results, fields){
+      if (err) {
+        console.log(err);
+        res.status(500).json({ error: 'Internal server error' });
+      } else if (results.length > 0) {
+        res.status(400).json({ error: 'Username already exists' });
+      } else { 
+        const insertUserQuery = 'INSERT INTO users (userName, password, name,  phone, email, address, website, company) VALUES ?';
+        const values = [ userName, password, name,  phone, email, address, website, company];
+        con.query(insertUserQuery, values, (err, result) => {
+          if (err){
+            console.log(err);
+            result.status(500).json({ error: 'Internal server error' });
+        } else {
+          result.json({ message: 'User registered successfully' });
+        }
+        })
+      }
+    })
+
+
   })
 
 
