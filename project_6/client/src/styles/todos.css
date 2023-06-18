@@ -51,3 +51,36 @@
     background-color: #fff;
     color: #333;
   }
+
+
+  .todo-input {
+    border: none;
+    border-radius: 10px;
+    padding: 8px;
+    background-color: #fff;
+    margin-right: 8px;
+    height: 60px;
+    width: 500px;
+  }
+  
+  .add-button {
+    background-color: #2c4c2d;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+  
+  .add-todo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+
+  .delete-icon{
+    margin-left: 100px;
+    color: rgb(158, 35, 35);
+    cursor: pointer;
+  }
