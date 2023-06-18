@@ -27,38 +27,34 @@ const Logup = () => {
     const handleSubmit = event => {
       event.preventDefault();
       const user = {
-        userName: formValue.userName,
+        username: formValue.username,
         password: formValue.password,
         name: formValue.name,
         email: formValue.email,
         phone: formValue.phone,
         address: formValue.address,
-        website: formValue.website
+        website: formValue.website,
+        company: formValue.company
       }
-      async function fetchData() {
-        // await fetch(`https://jsonplaceholder.typicode.com/users?username=${formValue.username}`).
-        // then(response => response.json()).
-        // then(th => console.log(th))
-        await fetch(`https://jsonplaceholder.typicode.com/users?username=${formValue.username}`)
-          .then(response => response.json())
-          .then(user => {
-            if(user.length === 0){
+      console.log(user)
+      async function fetchData(user) {
+        await fetch(`http://localhost:3070/register`, {
+          method: 'POST',
+          headers:{'Content-Type': 'application/json',},
+          body: JSON.stringify(user),
+        }).then(response => response.json())
+          .then(rUser => {
+            console.log(rUser);
+            if(rUser.length === 0){
               throw("username or password wrong. 000")
-            }
-            setData(user[0]);
-            console.log(user[0])
-            console.log(data, "11111111")
-            if (user[0].address.geo.lat.slice(-4) === formValue.password){
-              localStorage.setItem("user", JSON.stringify(user[0]));
-              console.log("navigate")
-              navigate(`/application/${user[0].id}`);
             } else {
-              throw("username or password wrong. 111")
+              localStorage.setItem("user", JSON.stringify(rUser));
+              console.log("navigate")
+              navigate(`/application/${rUser.name}`);
             }
-            console.log(data, "2222222222222")
             }).catch(err => alert(err))
       }
-      fetchData()
+      fetchData(user)
 
     }
 
@@ -77,49 +73,49 @@ const Logup = () => {
                 <button type="button" class="disable" id="signin" name="in" onClick={handleNavigation}>Sign In</button>
             </div>
             <label>
-            Name:
-            <input type="text"  name="name" className="input-field" value={formValue.name} onChange={handleChange} />
-          </label>
-          <br />
-          <label>
-            Email:
-            <input type="email" name="email" className="input-field"  value={formValue.email} onChange={handleChange} />
-          </label>
-          <br />
-          <label>
-            Phone:
-            <input type="text" name="phone" className="input-field"  value={formValue.phone} onChange={handleChange} />
-          </label>
-          <br />
-          <label>
-            Address:
-            <input type="text"  name="address" className="input-field" value={formValue.address} onChange={handleChange} />
-          </label>
-          <br />
-          <label>
-            Website:
-            <input type="text"  name="website" className="input-field" value={formValue.website} onChange={handleChange} />
-          </label>
-          <br />
-          <label>
-            Company:
-            <input type="text"  name="company" className="input-field" value={formValue.company} onChange={handleChange} />
-          </label>
-          <br />
-          <label>
-            Username:
-            <input type="text" required name="username" className="input-field" value={formValue.username} onChange={handleChange} />
-          </label>
-          <br />
-          <label>
-            Password:
-            <input type="password" required name="password" className="input-field"  value={formValue.password} onChange={handleChange} />
-          </label>
-          <br />
-          <div className="connect">
-          <button type="submit" className="connect">Log in</button>
-          </div>
-        </form>
+              Name:
+              <input type="text"  name="name" className="input-field" value={formValue.name} onChange={handleChange} />
+            </label>
+            <br />
+            <label>
+              Email:
+              <input type="email" name="email" className="input-field"  value={formValue.email} onChange={handleChange} />
+            </label>
+            <br />
+            <label>
+              Phone:
+              <input type="text" name="phone" className="input-field"  value={formValue.phone} onChange={handleChange} />
+            </label>
+            <br />
+            <label>
+              Address:
+              <input type="text"  name="address" className="input-field" value={formValue.address} onChange={handleChange} />
+            </label>
+            <br />
+            <label>
+              Website:
+              <input type="text"  name="website" className="input-field" value={formValue.website} onChange={handleChange} />
+            </label>
+            <br />
+            <label>
+              Company:
+              <input type="text"  name="company" className="input-field" value={formValue.company} onChange={handleChange} />
+            </label>
+            <br />
+            <label>
+              Username:
+              <input type="text" required name="username" className="input-field" value={formValue.username} onChange={handleChange} />
+            </label>
+            <br />
+            <label>
+              Password:
+              <input type="password" required name="password" className="input-field"  value={formValue.password} onChange={handleChange} />
+            </label>
+            <br />
+            <div className="connect">
+            <button type="submit" className="connect">Log in</button>
+            </div>
+          </form>
         </motion.div>
       );
 }

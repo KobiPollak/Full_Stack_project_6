@@ -30,24 +30,17 @@ const Login = () => {
         // await fetch(`https://jsonplaceholder.typicode.com/users?username=${formValue.username}`).
         // then(response => response.json()).
         // then(th => console.log(th))
-        await fetch(`http://localhost:3062/login/${formValue.username}/${formValue.password}`)
+        await fetch(`http://localhost:3070/login/${formValue.username}/${formValue.password}`)
           .then(response => response.json())
           .then(user => {
             if(user.length === 0){
               throw("username or password wrong. 000")
-            }
-            setData(user[0]);
-            console.log(user[0])
-            console.log(data, "11111111")
-            if (user[0].address.geo.lat.slice(-4) === formValue.password){
-              localStorage.setItem("user", JSON.stringify(user[0]));
-              console.log("navigate")
-              navigate(`/application/${user[0].id}`);
             } else {
-              throw("username or password wrong. 111")
-            }
-            console.log(data, "2222222222222")
-            }).catch(err => alert(err))
+              setData(user);
+              localStorage.setItem("user", JSON.stringify(user));
+              console.log("navigate")
+              navigate(`/application/${user.name}`);
+            }}).catch(err => alert(err))
       }
       fetchData()
 
