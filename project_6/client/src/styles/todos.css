@@ -1,0 +1,53 @@
+.todo-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .todo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 50%;
+  }
+  
+  .todo .checkbox-wrapper {
+    width: 25%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  
+  .todo .checkbox {
+    margin-right: 200px;
+  }
+  
+  .todo .title {
+    /* flex: 1; */
+    text-align: center;
+    width: 75%;
+  }
+  
+  .todo.completed .title {
+    text-decoration: line-through;
+    color: #ccc;
+  }
+  
+  .sort-select {
+    margin-bottom: 20px;
+  }
+  
+  .sort-select label {
+    margin-right: 10px;
+  }
+  
+  .sort-select select {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #333;
+  }
