@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import '../styles/login.css'
-
+const fetch = require('node-fetch');
 const Login = () => {
     const [formValue, setFormValues] = useState({ username: '', password: '' });
     const [data, setData] = useState();
@@ -26,11 +26,23 @@ const Login = () => {
 
     const handleSubmit = event => {
       event.preventDefault();
+      const entrance = {
+        userName:  formValue.username,
+        password:  formValue.password
+      }
       async function fetchData() {
         // await fetch(`https://jsonplaceholder.typicode.com/users?username=${formValue.username}`).
         // then(response => response.json()).
         // then(th => console.log(th))
-        await fetch(`http://localhost:3070/login/${formValue.username}/${formValue.password}`)
+        await fetch(`http://localhost:3070/login`,
+        {
+          method: "POST", // *GET, POST, PUT, DELETE, etc.
+          headers: {
+            "Content-Type": `login/json`,
+          },
+          body: JSON.stringify(entrance), // body data type must match "Content-Type" header
+        }
+        )
           .then(response => response.json())
           .then(user => {
             if(user.length === 0){

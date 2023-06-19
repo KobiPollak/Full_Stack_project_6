@@ -95,6 +95,7 @@ const Todos = () => {
               },
               body: JSON.stringify(newTodoObject), // body data type must match "Content-Type" header
             });
+            console.log(response)
             return response.json(); // parses JSON response into native JavaScript objects
           }
 

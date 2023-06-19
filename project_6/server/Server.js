@@ -1,131 +1,159 @@
-var mysql = require('mysql2');
-var express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
+var mysql = require("mysql2");
+var express = require("express");
+const bodyParser = require("body-parser");
 
-const app = express()
+const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(cors());
-
 
 var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "Kobi09pollak",
-    database: "project6"
+  host: "localhost",
+  user: "root",
+  password: "Kobi09pollak",
+  database: "project6",
+});
+
+app.get("/", (req, res) => {
+  res.send("Hello world");
+});
+
+app.post("/login", (req, res) => {
+  const newReq = JSON.parse(req);
+  const userName = newReq.body.userName;
+  const password = newReq.body.password;
+
+  con.connect(function (err) {
+    if (err) throw err;
+    console.log(userName, password);
+    console.log("Connected!");
+
+    const sql = `SELECT * FROM passwords AS p JOIN users AS u ON p.userId = u.id WHERE u.userName = '${userName}' AND p.password = '${password}'`;
+
+    con.query(sql, function (err, results, fields) {
+      if (err) throw err;
+      console.log("query done");
+      console.log(results[0].id);
+      res.statusCode = 200;
+      res.send(
+        results.length === 0
+          ? JSON.stringify(false)
+          : JSON.stringify(results[0])
+      );
+    });
   });
+});
 
-  app.get('/', (req,res) => {
-    res.send('Hello world');
-  })
-
-  app.get('/login/:userName/:password', (req, res) => {
-    const userName = req.params.userName;
-    const password = req.params.password;
-    con.connect(function(err) {
-            if (err) throw err;
-            console.log(userName, password);
-            console.log("Connected!");
-            const sql = `select * from passwords as p join users as u ON p.userId = u.id where u.userName = '${userName}' and p.password = ${password} `;
-            // const sql = `select * from passwords as p join users as u`;
-            con.query(sql, function (err, results, fields) {
-                if (err) throw err;
-                console.log("query done");
-                const p = JSON.stringify({f:43, ld: 423});
-                console.log(JSON.parse(p));
-                console.log(results[0].id);
-                res.statusCode = 200;
-                res.send(results.length === 0 ? JSON.stringify(false) : JSON.stringify(results[0]));
-            });
-          });
-  })
-
-  app.get(`/todos/:user_id`, (req, res) => {
-    const userId = req.params.user_id;
-    console.log(userId);
-    // const userId = 1;
-    const completedSort = req.query.completedSort || false;
-    const idSort = req.query.idSort || false;
-    const randomSort = req.query.randomSort || false;
-    con.connect(function(err){
-        if (err) throw err;
-        const sql = `select * from todos as t where t.userId = '${userId}' order by '${idSort ? "id": completedSort ? "completed" : randomSort ? "RAND()" : "id"}' ASC`;
-        console.log(sql);
-        con.query(sql, function (err, results, fields){
-            if (err) throw err;
-            console.log(results);
-            res.send(JSON.stringify(results));
-        })
-    })
-  })
-
-  app.get(`/posts/:userId`, (req, res) => {
-    const userId = req.params.userId;
-    const withComments = req.query.withComments ;
-    console.log(withComments);
-    let sql;
-    if (withComments === true){
-        sql = `select * from posts as p join comments as c on p.userId = ${userId} and p.id = c.postId`;
-    } else {
-        sql = `select * from posts where userId = ${userId}`;
-    }
-    con.query(sql, function (err, results, fields){
-        if (err) throw err;
-        console.log(results);
-        res.send(JSON.stringify(results));
-    })
-  })
-
-  app.get('/info/:username', (req, res) => {
-    const username = req.params.username;
-    console.log(username);
-    const sql = `SELECT * FROM users WHERE userName = '${username}'`;
-    con.query(sql,  function (err, results, fields){
+app.get(`/todos/:userId`, (req, res) => {
+  const userId = req.params.userId;
+  const completedSort = req.query.completedSort || false;
+  const idSort = req.query.idSort || false;
+  const randomSort = req.query.randomSort || false;
+  con.connect(function (err) {
+    if (err) throw err;
+    const sql = `select * from todos as t where t.userId = ${userId} order by ${
+      idSort ? "id" : completedSort ? "completed" : randomSort ? "RAND()" : "id"
+    } ASC`;
+    con.query(sql, function (err, results, fields) {
       if (err) throw err;
       console.log(results);
-      res.send(JSON.stringify(results[0]));
-    })
-  })
+      res.send(JSON.stringify(results));
+    });
+  });
+});
 
-  app.post('/register', (req, res) => {
-    const { username, password, name,  phone, email, address, website, company} = req.body;
-    const checkUsernameQuery = `SELECT * FROM users WHERE userName = '${username}'`;
-    con.query(checkUsernameQuery, function(err, results, fields){
-      if (err) {
-        console.log(err);
-        res.status(500).json({ error: 'Internal server error111111' });
-      } else if (results.length > 0) {
-        res.status(400).json({ error: 'Username already exists' });
-      } else { 
-        const insertUserQuery = 'INSERT INTO users SET ?';
-        const values = { userName: username, name, phone, email, address, website, company };
-        console.log(values)
-        con.query(insertUserQuery, values, (err, result) => {
-          if (err){
-            console.log(err);
-            res.status(500).json({ error: 'Internal server error22222222' });
-        } else {
-          console.log(result)
-          const insertPasswordQuery = `INSERT INTO passwords (userId, password) VALUES ('${result.insertId}', '${password}')`;
-          con.query(insertPasswordQuery, (err, result) => {
-            if (err){
-              console.log(err);
-              res.status(500).json({ error: 'Internal server error33333' });
-          } else {
-            console.log(result);
-            res.status(200).json(values)
-          }
-          })
-        }
-        })
+app.post('/todos/new', (req, res) => {
+  const newTodo = req.body;
+
+  // Insert the new todo into the database
+  const sql = `INSERT INTO todos SET ${newTodo}` ;
+  console.log(sql);
+  con.query(sql, newTodo, (error, results, fields) => {
+    if (error) {
+      console.error('Error inserting new todo:', error);
+      res.status(500).json({ error: 'Failed to create new todo.' });
+    } else {
+      res.status(200).json({ message: 'New todo created successfully.' });
+      res.send(JSON.stringify(results.insertId))
+    }
+  });
+
+  // Close the database connection
+  connection.end();
+});
+
+app.get(`/posts/:userId`, (req, res) => {
+  const userId = req.params.userId;
+  const withComments = req.query.withComments;
+  console.log(withComments);
+  let sql;
+  if (withComments === true) {
+    sql = `select * from posts as p join comments as c on p.userId = ${userId} and p.id = c.postId`;
+  } else {
+    sql = `select * from posts where userId = ${userId}`;
+  }
+  con.query(sql, function (err, results, fields) {
+    if (err) throw err;
+    console.log(results);
+    res.send(JSON.stringify(results));
+  });
+});
+
+
+app.post('/todos/delete', (req, res) => {
+
+  const deleteElement = req.body;
+
+  // Delete the todo from the database
+  const deleteQuery = `DELETE FROM todos WHERE userId = ${deleteElement.userId} AND todoId = ${deleteElement.todoId}`;
+
+  connection.query(
+    deleteQuery,
+    [deleteElement.userId, deleteElement.todoId],
+    (error, results, fields) => {
+      if (error) {
+        console.error('Error deleting todo:', error);
+        res.status(500).json({ error: 'Failed to delete todo.' });
+      } else {
+        res.status(200).json({ message: 'Todo deleted successfully.' });
       }
-    })
+    }
+  );
+});
 
-
-  })
-
-
+app.post("register", (req, res) => {
+  const { userName, password, name, phone, email, address, website, company } =
+    req.body;
+  const checkUsernameQuery = `SELECT * FROM users WHERE userName=${userName}`;
+  con.query(checkUsernameQuery, function (err, results, fields) {
+    if (err) {
+      console.log(err);
+      res.status(500).json({ error: "Internal server error" });
+    } else if (results.length > 0) {
+      res.status(400).json({ error: "Username already exists" });
+    } else {
+      const insertUserQuery =
+        "INSERT INTO users (userName, password, name,  phone, email, address, website, company) VALUES ?";
+      const values = [
+        userName,
+        password,
+        name,
+        phone,
+        email,
+        address,
+        website,
+        company,
+      ];
+      con.query(insertUserQuery, values, (err, result) => {
+        if (err) {
+          console.log(err);
+          result.status(500).json({ error: "Internal server error" });
+        } else {
+          result.json({ message: "User registered successfully" });
+        }
+      });
+    }
+  });
+});
 
 const port = 3070; // or any port number you prefer
 app.listen(port, () => {
