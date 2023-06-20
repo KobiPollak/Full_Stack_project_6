@@ -98,13 +98,14 @@
   }
 
 
-  .delete-icon{
+  .delete-icon1{
     display: flex;
     align-items: center;
     justify-content: center;
     cursor:default;
     padding: 10px 20px;
     width: 100px;
+    color: rgb(158, 35, 35);
     margin-left: 45%;
     margin-right: 50%;
     border-radius: 10px;

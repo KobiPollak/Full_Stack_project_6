@@ -85,8 +85,6 @@ const Posts = () => {
           setNewPostBody("");
           setNewPostTitle("");
         });
-      console.log(response);
-      return response.json(); // parses JSON response into native JavaScript objects
     }
 
     postNewPost();

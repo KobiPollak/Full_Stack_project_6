@@ -107,7 +107,7 @@ export default function Post(props) {
           </button>
         </div>
         <div
-          className="delete-icon"
+          className="delete-icon1"
           onClick={() => props.handleDelete(props.p.id)}
         >
           <i class="fa-solid fa-trash"></i>
