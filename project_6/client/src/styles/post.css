@@ -96,3 +96,28 @@
     border-radius: 10px;
     margin-bottom: 20px;
   }
+
+
+  .delete-icon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor:default;
+    padding: 10px 20px;
+    width: 100px;
+    margin-left: 45%;
+    margin-right: 50%;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+
+  .delete{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor:default;
+    padding: 10px 20px;
+    /* width: 100px; */
+    color: rgb(145, 27, 27);
+    cursor: pointer;
+  }
