@@ -87,6 +87,29 @@ app.post("/todos/new", (req, res) => {
   });
 });
 
+app.post("/posts/new", (req, res) => {
+  const newTodo = req.body;
+  if (!newTodo.userId || !newTodo.title || !newTodo.completed) {
+    res.status(400).send("ha ha ha");
+    return;
+  }
+  con.connect(function (err) {
+    if (err) throw err;
+  });
+  // Insert the new todo into the database
+  const sql = `INSERT INTO posts SET ?`;
+  // console.log(sql);
+  con.query(sql, newTodo, (error, results, fields) => {
+    if (error) {
+      console.error("Error inserting new post:", error);
+      res.status(500).json({ error: "Failed to create new todo." });
+    } else {
+      // console.log(results);
+      res.status(200).json(results);
+    }
+  });
+});
+
 app.get(`/posts/:userId`, (req, res) => {
   const userId = req.params.userId;
   const withComments = req.query.withComments;
@@ -104,11 +127,31 @@ app.get(`/posts/:userId`, (req, res) => {
   });
 });
 
+app.post("/todos", (req, res) => {
+  
+  const { completed,postId } = req.body;
+
+  // Update the todo in the database
+  const updateQuery = `UPDATE todos SET completed = ${completed} WHERE id = ${postId}`;
+  con.connect(function (err) {
+    if (err) throw err;
+  });
+  con.query(updateQuery, (error, results, fields) => {
+    if (error) {
+      console.error("Error updating todo:", error);
+      res.status(500).json({ error: "Failed to update todo." });
+    } else {
+      res.status(200).json({ message: "Todo updated successfully." });
+    }
+  });
+});
+
+
 app.post("/todos/delete", (req, res) => {
   const deleteElement = req.body;
   // console.log(deleteElement);
   // Delete the todo from the database
-  const deleteQuery = `DELETE FROM todos WHERE userId = ${deleteElement.userId} AND todoId = ${deleteElement.todoId}`;
+  const deleteQuery = `DELETE FROM todos WHERE id = ${deleteElement.todoId}`;
   con.connect(function (err) {
     if (err) throw err;
     // console.log("Connected!");
