@@ -1,11 +1,12 @@
 var mysql = require("mysql2");
 var express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
+app.use(cors());
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -18,10 +19,11 @@ app.get("/", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  const newReq = JSON.parse(req);
-  const userName = newReq.body.userName;
-  const password = newReq.body.password;
-
+  const { userName, password } = req.body;
+  if (!userName || !password) {
+    res.status(400).json({ error: "userName and password are required" });
+    return;
+  }
   con.connect(function (err) {
     if (err) throw err;
     console.log(userName, password);
@@ -32,7 +34,6 @@ app.post("/login", (req, res) => {
     con.query(sql, function (err, results, fields) {
       if (err) throw err;
       console.log("query done");
-      console.log(results[0].id);
       res.statusCode = 200;
       res.send(
         results.length === 0
@@ -61,24 +62,34 @@ app.get(`/todos/:userId`, (req, res) => {
   });
 });
 
-app.post('/todos/new', (req, res) => {
+app.post("/todos/new", (req, res) => {
   const newTodo = req.body;
-
+  console.log(newTodo);
+  if (!newTodo.userId || !newTodo.title || !newTodo.completed) {
+    res.status(400).send("ha ha ha");
+    return;
+  }
+  con.connect(function (err) {
+    if (err) throw err;
+    console.log("Connected!");
+  });
   // Insert the new todo into the database
-  const sql = `INSERT INTO todos SET ${newTodo}` ;
+  const sql = `INSERT INTO todos SET ?`;
   console.log(sql);
   con.query(sql, newTodo, (error, results, fields) => {
     if (error) {
-      console.error('Error inserting new todo:', error);
-      res.status(500).json({ error: 'Failed to create new todo.' });
+      console.error("Error inserting new todo:", error);
+      res.status(500).json({ error: "Failed to create new todo." });
     } else {
-      res.status(200).json({ message: 'New todo created successfully.' });
-      res.send(JSON.stringify(results.insertId))
+      res
+        .status(200)
+        .json({
+          message: "New todo created successfully.",
+          insertId: results.insertId,
+        });
     }
   });
 
-  // Close the database connection
-  connection.end();
 });
 
 app.get(`/posts/:userId`, (req, res) => {
@@ -98,23 +109,24 @@ app.get(`/posts/:userId`, (req, res) => {
   });
 });
 
-
-app.post('/todos/delete', (req, res) => {
-
+app.post("/todos/delete", (req, res) => {
   const deleteElement = req.body;
-
+  console.log(deleteElement)
   // Delete the todo from the database
   const deleteQuery = `DELETE FROM todos WHERE userId = ${deleteElement.userId} AND todoId = ${deleteElement.todoId}`;
-
-  connection.query(
+  con.connect(function (err) {
+    if (err) throw err;
+    console.log("Connected!");
+  });
+  con.query(
     deleteQuery,
     [deleteElement.userId, deleteElement.todoId],
     (error, results, fields) => {
       if (error) {
-        console.error('Error deleting todo:', error);
-        res.status(500).json({ error: 'Failed to delete todo.' });
+        console.error("Error deleting todo:", error);
+        res.status(500).json({ error: "Failed to delete todo." });
       } else {
-        res.status(200).json({ message: 'Todo deleted successfully.' });
+        res.status(200).json({ message: "Todo deleted successfully." });
       }
     }
   );

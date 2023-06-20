@@ -1,9 +1,10 @@
+
 import React , {useState, useEffect} from "react";
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 
+
 import '../styles/login.css'
-const fetch = require('node-fetch');
 const Login = () => {
     const [formValue, setFormValues] = useState({ username: '', password: '' });
     const [data, setData] = useState();
@@ -34,11 +35,11 @@ const Login = () => {
         // await fetch(`https://jsonplaceholder.typicode.com/users?username=${formValue.username}`).
         // then(response => response.json()).
         // then(th => console.log(th))
-        await fetch(`http://localhost:3070/login`,
+        await fetch('http://localhost:3070/login',
         {
           method: "POST", // *GET, POST, PUT, DELETE, etc.
           headers: {
-            "Content-Type": `login/json`,
+            "Content-Type": `application/json`,
           },
           body: JSON.stringify(entrance), // body data type must match "Content-Type" header
         }

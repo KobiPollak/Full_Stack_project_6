@@ -88,10 +88,11 @@ const Todos = () => {
         };
 
         async function postTodo() {
+            console.log(newTodoObject)
             const response = await fetch('http://localhost:3070/todos/new', {
               method: "POST", // *GET, POST, PUT, DELETE, etc.
               headers: {
-                "Content-Type": `todos/json`,
+                "Content-Type": `application/json`,
               },
               body: JSON.stringify(newTodoObject), // body data type must match "Content-Type" header
             });
@@ -120,7 +121,7 @@ const Todos = () => {
             const response = await fetch('http://localhost:3070/todos/delete', {
               method: "POST", // *GET, POST, PUT, DELETE, etc.
               headers: {
-                "Content-Type": `todos/json`,
+                "Content-Type": `application/json`,
               },
               body: JSON.stringify(deleteElement), // body data type must match "Content-Type" header
             });
