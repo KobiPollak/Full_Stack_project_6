@@ -177,45 +177,73 @@ app.post("/todos/delete", (req, res) => {
   );
 });
 
-app.post("/register", (req, res) => {
-  const { userName, password, name, phone, email, address, website, company } =
-    req.body;
-  const checkUsernameQuery = `SELECT * FROM users WHERE userName= ${userName}`;
+app.post("/posts/delete", (req, res) => {
+  const deleteElement = req.body;
+  // console.log(deleteElement);
+  // Delete the todo from the database
+  const deletePost = `DELETE FROM posts WHERE id = ${deleteElement.id}`;
+  const deleteComments = `DELETE FROM comments WHERE postId = ${deleteElement.userId}`;
   con.connect(function (err) {
     if (err) throw err;
     // console.log("Connected!");
   });
-  con.query(checkUsernameQuery, function (err, results, fields) {
+  con.query(
+    deletePost,
+    [deleteElement.userId, deleteElement.id],
+    (error, results, fields) => {
+      if (error) {
+        console.log('aaaaa')
+        console.error("Error deleting post:", error);
+        res.status(500).json({ error: "Failed to delete post." });
+      } else {
+        con.query(
+          deleteComments,
+          [deleteElement.userId, deleteElement.id],
+          (error, results, fields) => {
+            if (error) {
+              console.error("Error deleting comment:", error);
+              res.status(500).json({ error: "Failed to delete commend." });
+            } else {
+              res.status(200).json({ message: "commend deleted successfully." });
+            }
+          }
+        );
+      }
+    }
+  );
+  
+});
+
+app.post("/register", (req, res) => {
+  const {
+    username,
+    password,
+    name,
+    email,
+    phone,
+    address,
+    website,
+    company
+  } = req.body;
+
+  const insertUserQuery = `INSERT INTO users (username, password, name, email, phone, address, website, company) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+  const values = [username, password, name, email, phone, address, website, company];
+  con.connect(function (err) {
+    if (err) throw err;
+    // console.log("Connected!");
+  });
+  con.query(insertUserQuery, values, (err, result) => {
     if (err) {
-      // console.log(err);
+      console.error(err);
       res.status(500).json({ error: "Internal server error" });
-    } else if (results.length > 0) {
-      res.status(400).json({ error: "Username already exists" });
     } else {
-      const insertUserQuery =
-        "INSERT INTO users (userName, password, name,  phone, email, address, website, company) VALUES ?";
-      const values = [
-        userName,
-        password,
-        name,
-        phone,
-        email,
-        address,
-        website,
-        company,
-      ];
-      con.query(insertUserQuery, values, (err, result) => {
-        if (err) {
-          // console.log(err);
-          result.status(500).json({ error: "Internal server error" });
-        } else {
-          console.log('ffff')
-          result.json({ message: "User registered successfully" });
-        }
-      });
+      console.log('User registered successfully');
+      res.json({ message: "User registered successfully" });
     }
   });
 });
+
+
 
 app.get('/info/:username', (req, res) => {
   const username = req.params.username;
