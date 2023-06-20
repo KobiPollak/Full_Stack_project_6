@@ -88,23 +88,23 @@ app.post("/todos/new", (req, res) => {
 });
 
 app.post("/posts/new", (req, res) => {
-  const newTodo = req.body;
-  if (!newTodo.userId || !newTodo.title || !newTodo.completed) {
-    res.status(400).send("ha ha ha");
-    return;
-  }
-  con.connect(function (err) {
-    if (err) throw err;
-  });
+  const newPost = req.body;
+  // if (!newTodo.userId || !newTodo.title || !newTodo.completed) {
+  //   res.status(400).send("ha ha ha");
+  //   return;
+  // }
+  // con.connect(function (err) {
+  //   if (err) throw err;
+  // });
   // Insert the new todo into the database
   const sql = `INSERT INTO posts SET ?`;
-  // console.log(sql);
-  con.query(sql, newTodo, (error, results, fields) => {
+  console.log(sql);
+  con.query(sql, newPost, (error, results, fields) => {
     if (error) {
       console.error("Error inserting new post:", error);
       res.status(500).json({ error: "Failed to create new todo." });
     } else {
-      // console.log(results);
+      console.log(results);
       res.status(200).json(results);
     }
   });
@@ -177,10 +177,14 @@ app.post("/todos/delete", (req, res) => {
   );
 });
 
-app.post("register", (req, res) => {
+app.post("/register", (req, res) => {
   const { userName, password, name, phone, email, address, website, company } =
     req.body;
-  const checkUsernameQuery = `SELECT * FROM users WHERE userName=${userName}`;
+  const checkUsernameQuery = `SELECT * FROM users WHERE userName= ${userName}`;
+  con.connect(function (err) {
+    if (err) throw err;
+    // console.log("Connected!");
+  });
   con.query(checkUsernameQuery, function (err, results, fields) {
     if (err) {
       // console.log(err);
@@ -205,6 +209,7 @@ app.post("register", (req, res) => {
           // console.log(err);
           result.status(500).json({ error: "Internal server error" });
         } else {
+          console.log('ffff')
           result.json({ message: "User registered successfully" });
         }
       });
