@@ -1,0 +1,98 @@
+/* .post-card {
+    background-color: #f1f1f1;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    margin-left: 40px;
+    margin-right: 40px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+  } */
+
+  .post-card {
+    background-color: #f1f1f1;
+    padding: 20px;
+    margin-left: 40px;
+    margin-right: 40px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  
+  .post-card-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .post-card-body {
+    margin-bottom: 10px;
+  }
+
+  .title{
+    text-align: center;
+    margin: 20px;
+  }
+
+  .post-card.selected {
+    transform: scale(1.05);
+    color: rgb(104, 104, 5);
+  }
+
+  .button-cont {
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    /* height: 4vh; */
+  }
+
+  .see-comments-button{
+    background-color: #59cec6;
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .hidden{
+    visibility: hidden; 
+
+  }
+
+  li{
+    list-style-type: none;
+  }
+
+  .post-input {
+    border: none;
+    border-radius: 10px;
+    padding: 8px;
+    background-color: #fff;
+    margin-right: 8px;
+    height: 60px;
+    width: 500px;
+  }
+  
+  .add-button {
+    background-color: #2c4c2d;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+  
+  .add-post {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    /* margin-bottom: 20px;
+    margin-top: 20px; */
+    padding: 20px;
+    margin-left: 10%;
+    margin-right: 10%;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
