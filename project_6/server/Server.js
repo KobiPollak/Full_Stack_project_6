@@ -110,6 +110,15 @@ app.post("/posts/new", (req, res) => {
   });
 });
 
+app.get("/comments/:postId", (req, res) => {
+  const postId = req.params.postId;
+  const sql = `SELECT * FROM comments WHERE comments.postId = '${postId}'`;
+  con.query(sql, function (err, results) {
+    if (err) throw err;
+    res.status(200).json(results);
+  });
+});
+
 app.get(`/posts/:userId`, (req, res) => {
   const userId = req.params.userId;
   const withComments = req.query.withComments;
@@ -128,8 +137,7 @@ app.get(`/posts/:userId`, (req, res) => {
 });
 
 app.post("/todos", (req, res) => {
-  
-  const { completed,postId } = req.body;
+  const { completed, postId } = req.body;
 
   // Update the todo in the database
   const updateQuery = `UPDATE todos SET completed = ${completed} WHERE id = ${postId}`;
@@ -145,7 +153,6 @@ app.post("/todos", (req, res) => {
     }
   });
 });
-
 
 app.post("/todos/delete", (req, res) => {
   const deleteElement = req.body;
