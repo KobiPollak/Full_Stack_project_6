@@ -47,7 +47,7 @@ const Todos = () => {
       const response = await fetch("http://localhost:3070/todos", {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
         headers: {
-          "Content-Type": `todos/json`,
+          "Content-Type": `application/json`,
         },
         body: JSON.stringify(toChange), // body data type must match "Content-Type" header
       });

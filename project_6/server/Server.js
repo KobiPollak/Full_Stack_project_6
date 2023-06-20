@@ -212,6 +212,17 @@ app.post("register", (req, res) => {
   });
 });
 
+app.get('/info/:username', (req, res) => {
+  const username = req.params.username;
+  console.log(username);
+  const sql = `SELECT * FROM users WHERE userName = '${username}'`;
+  con.query(sql,  function (err, results, fields){
+    if (err) throw err;
+    console.log(results);
+    res.send(JSON.stringify(results[0]));
+    })
+  })
+
 const port = 3070; // or any port number you prefer
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
