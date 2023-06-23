@@ -11,7 +11,6 @@ export default function Post(props) {
     );
     const comments_list = await comments.json();
     setCommentsList(comments_list);
-    // e.target.style.visibility = "hidden";
     e.target.classList.add("hidden");
   }
 
@@ -66,7 +65,6 @@ export default function Post(props) {
             className={`see-comments-button ${
               props.isSelected ? "" : "hidden"
             }`}
-            // style={{ visibility: props.isSelected ? "visible" : "hidden" }}
             onClick={(e) => importComments(e)}
           >
             Show Comments
@@ -83,7 +81,6 @@ export default function Post(props) {
               <label>{comment.body}</label>
             </div>
             <div className="delete" onClick={() => deleteComment(comment.id)}>
-              {/* <i class="fa-solid fa-trash"></i> */}
               <p>delete comment</p>
             </div>
             {index < commentsList.length - 1 && (

@@ -18,7 +18,6 @@ const Info = () => {
         getData()
     }, [])
 
-    // const { name, userName, email, phone, website, address, company } = details;
 
     return (
         <div className="user-card">

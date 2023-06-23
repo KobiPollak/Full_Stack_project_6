@@ -12,7 +12,6 @@ const Posts = () => {
   async function importData() {
     const posts_list = await fetch(`http://localhost:3070/posts/${userId}`);
     const post_list_json = await posts_list.json();
-    // const temp = post_list_json.filter(post => post.userId === userId);
     setData(post_list_json);
   }
 
@@ -24,18 +23,12 @@ const Posts = () => {
     setSelectedPostId(postId);
   };
 
-  //   const handleChange1 = event => {
-  //     const { name, value } = event.target;
-  //     setNewPost(prevState => ({ ...prevState, [name]: value }));
-  //   }
-
   const handleDelete = (id) => {
     const deleteElement = {
       id: id,
       userId: userId,
     };
 
-    // Show the confirmation dialog
     const confirmed = window.confirm(
       "Are you sure you want to delete this post?\n the deleting will delete all the comments that related."
     );
@@ -71,11 +64,11 @@ const Posts = () => {
     async function postNewPost() {
       console.log(newPost);
       const response = await fetch("http://localhost:3070/posts/new", {
-        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        method: "POST",
         headers: {
           "Content-Type": `application/json`,
         },
-        body: JSON.stringify(newPost), // body data type must match "Content-Type" header
+        body: JSON.stringify(newPost),
       })
         .then((res) => res.json())
         .then((res) => {
@@ -88,10 +81,6 @@ const Posts = () => {
     }
 
     postNewPost();
-
-    // newPost['id'] = response.id
-    // const updatedPostList = [...data, newPost];
-    // setData(updatedPostList);
   };
 
   return (

@@ -32,9 +32,7 @@ const Login = () => {
         password:  formValue.password
       }
       async function fetchData() {
-        // await fetch(`https://jsonplaceholder.typicode.com/users?username=${formValue.username}`).
-        // then(response => response.json()).
-        // then(th => console.log(th))
+        
         await fetch('http://localhost:3070/login',
         {
           method: "POST", // *GET, POST, PUT, DELETE, etc.

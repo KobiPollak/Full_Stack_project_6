@@ -6,7 +6,7 @@ import "../styles/todos.css";
 const Todos = () => {
   const user_id = JSON.parse(localStorage.getItem("user")).id;
   const [todo_list, setTodo_list] = useState([]);
-  const [sorting, setSorting] = useState("id"); // default sorting option
+  const [sorting, setSorting] = useState("id");
   const [newTodo, setNewTodo] = useState("");
 
   const handleSorting = (e) => {
@@ -19,16 +19,14 @@ const Todos = () => {
           : sorting === "uncompleted"
           ? "completedSort=true"
           : "randomSort=true";
-      // const sortMethod = "randomSort=true";
+
       console.log(sortMethod);
       const todo_list = await fetch(
         `http://localhost:3070/todos/${user_id}?${sortMethod}`
       );
       const data = await todo_list.json();
-      // const user_todos = data.filter(todo => todo.userId === user_id)
-      // console.log(data);
+
       setTodo_list(data);
-      // console.log(user_todos[7])
     }
     importTodos();
   };
@@ -45,13 +43,13 @@ const Todos = () => {
     };
     async function postData(toChange) {
       const response = await fetch("http://localhost:3070/todos", {
-        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        method: "POST",
         headers: {
           "Content-Type": `application/json`,
         },
-        body: JSON.stringify(toChange), // body data type must match "Content-Type" header
+        body: JSON.stringify(toChange),
       });
-      return response.json(); // parses JSON response into native JavaScript objects
+      return response.json();
     }
 
     const response = postData(toChange);
@@ -66,37 +64,25 @@ const Todos = () => {
     console.log(new_list);
     localChange.completed = completed;
     new_list.splice(index, 0, localChange);
-    // new_list.push(localChange)
+
     setTodo_list(new_list);
   };
 
-  // const handleTodoClick2 = (todoId, newCompletedValue) => {
-  //     // Update the completed value of the todo with the given id
-  //     const updatedTodoList = todoList.map((todo) => {
-  //       if (todo.id === todoId) {
-  //         return { ...todo, completed: newCompletedValue };
-  //       }
-  //       return todo;
-  //     });
-  //     setTodoList(updatedTodoList);
-  //   };
-
   const handleAddTodo = () => {
-    // Create the new todo object
     const newTodoObject = {
       userId: user_id,
       title: newTodo,
-      completed: "0", // Assuming initial completed value is '0'
+      completed: "0",
     };
 
     async function postTodo() {
       console.log(newTodoObject);
       const response = await fetch("http://localhost:3070/todos/new", {
-        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        method: "POST",
         headers: {
           "Content-Type": `application/json`,
         },
-        body: JSON.stringify(newTodoObject), // body data type must match "Content-Type" header
+        body: JSON.stringify(newTodoObject),
       })
         .then((res) => res.json())
         .then((res) => {
@@ -105,29 +91,14 @@ const Todos = () => {
           const updatedTodoList = [...todo_list, newTodoObject];
           setTodo_list(updatedTodoList);
 
-          // Clear the input field
           setNewTodo("");
           return res;
         });
 
-      return response; // parses JSON response into native JavaScript objects
+      return response;
     }
 
-    // const response = postTodo();
     postTodo();
-
-    // const a = responsePromise.then((response) => {
-    //   return response;
-    // });
-    // console.log(re);
-
-    // newTodoObject["id"] = response.insertId;
-    // console.log(response.insertId);
-    // const updatedTodoList = [...todo_list, newTodoObject];
-    // setTodo_list(updatedTodoList);
-
-    // // Clear the input field
-    // setNewTodo("");
   };
 
   const handleDelete = (id) => {
@@ -138,13 +109,13 @@ const Todos = () => {
 
     async function deleteTodo() {
       const response = await fetch("http://localhost:3070/todos/delete", {
-        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        method: "POST",
         headers: {
           "Content-Type": `application/json`,
         },
-        body: JSON.stringify(deleteElement), // body data type must match "Content-Type" header
+        body: JSON.stringify(deleteElement),
       });
-      return response.json(); // parses JSON response into native JavaScript objects
+      return response.json();
     }
 
     deleteTodo();
