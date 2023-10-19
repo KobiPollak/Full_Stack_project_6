@@ -1,6 +1,8 @@
 # Full_Stack_project_6
 
-This full-stack project combines a React front-end with a Node.js back-end to interact with the [JSONPlaceholder](https://jsonplaceholder.typicode.com/) web service and a local MySQL database. JSONPlaceholder is a fake online REST API for testing and prototyping. ## Project Overview This project consists of two main components:
+This full-stack project combines a React front-end with a Node.js back-end to interact with a local MySQL database. While [JSONPlaceholder](https://jsonplaceholder.typicode.com/) initially provides mock data, the server collects and manages the data, ensuring that the project primarily relies on the server and local database for functionality and data storage. [JSONPlaceholder](https://jsonplaceholder.typicode.com/) is a fake online REST API used as the initial data source during setup. 
+## Project Overview
+This project consists of two main components:
  1. **Client-Side**: A React application that provides a user interface for interacting with the JSONPlaceholder API, including the ability to view user data, todos, posts, comments, albums, and photos. Additionally, users can post new todos, delete todos, create new posts, and add comments to posts. 
  2. **Server-Side**: A Node.js server that fetches data from JSONPlaceholder and stores it in a local MySQL database. It also exposes API endpoints for the React front-end to interact with, including adding and deleting todos, creating new posts, and managing comments.
 
@@ -12,6 +14,10 @@ To get started with this project, follow these steps:
  - Clone the repository to your local machine: 
   ```bash
   git clone <https://github.com/KobiPollak/Full_Stack_project_6>
+```
+- Navigate to the project:
+```bash
+cd project_6
 ```
 - Navigate to the `client` directory:
 ```bash
