@@ -1,18 +1,12 @@
 
 var mysql = require('mysql2');
 const axios = require('axios');
-import dotenv from "dotenv";
-dotenv.config();
 
 var con = mysql.createConnection({
-  // host: "localhost",
-  // user: "root",
-  // password: "Kobi09pollak",
-  // database: "project6"
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
+  host: "localhost",
+  user: "root",
+  password: "Kobi09pollak",
+  database: "project6"
 });
 
 // con.connect(function(err) {

@@ -30,6 +30,8 @@ function App() {
           <Route index path="/application/:id/info" element={<Info />} />
           <Route path="/application/:id/todos" element={<Todos />} />
           <Route path="/application/:id/posts" element={<Posts />} />
+          {/* <Route path="/application/:id/albums" element={<Albums />} />
+        <Route path="/application/:id/albums/:id/photos" element={<Photos />} /> */}
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

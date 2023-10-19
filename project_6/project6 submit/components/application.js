@@ -3,6 +3,10 @@ import { Link, Outlet, Route, Routes } from "react-router-dom";
 
 import '../styles/application.css'
 
+// import Info from './info';
+// import Todos from './todos';
+// import Posts from './posts';
+// import Albums from './albums';
 
 const Application = () => {
     const user = JSON.parse(localStorage.getItem('user'))
@@ -23,6 +27,8 @@ const Application = () => {
                     <Link to={`/application/${user.name}/todos`}>Todos</Link>
                     <span className="navbar__separator"></span>
                     <Link to={`/application/${user.name}/posts`}>Posts</Link>
+                    <span className="navbar__separator"></span>
+                    <Link to={`/application/${user.name}/albums`}>Albums</Link>
                 </div>
                 <div className="navbar__right">
                     <Link to='/login' onClick={handleLogout}>Logout</Link>

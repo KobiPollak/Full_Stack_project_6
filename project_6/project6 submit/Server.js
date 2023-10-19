@@ -2,22 +2,16 @@ var mysql = require("mysql2");
 var express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const dotenv = require("dotenv");
-dotenv.config();
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 var con = mysql.createConnection({
-  // host: "localhost",
-  // user: "root",
-  // password: "Kobi09pollak",
-  // database: "project6",
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
+  host: "localhost",
+  user: "root",
+  password: "Kobi09pollak",
+  database: "project6",
 });
 
 app.get("/", (req, res) => {
@@ -32,11 +26,14 @@ app.post("/login", (req, res) => {
   }
   con.connect(function (err) {
     if (err) throw err;
+    // console.log(userName, password);
+    // console.log("Connected!");
 
     const sql = `SELECT * FROM passwords AS p JOIN users AS u ON p.userId = u.id WHERE u.userName = '${userName}' AND p.password = '${password}'`;
 
     con.query(sql, function (err, results, fields) {
       if (err) throw err;
+      // console.log("query done");
       res.statusCode = 200;
       res.send(
         results.length === 0
@@ -61,6 +58,7 @@ app.get(`/todos/:userId`, (req, res) => {
     console.log(sql);
     con.query(sql, function (err, results, fields) {
       if (err) throw err;
+      // console.log(results);
       res.send(JSON.stringify(results));
     });
   });
@@ -77,11 +75,13 @@ app.post("/todos/new", (req, res) => {
   });
   // Insert the new todo into the database
   const sql = `INSERT INTO todos SET ?`;
+  // console.log(sql);
   con.query(sql, newTodo, (error, results, fields) => {
     if (error) {
       console.error("Error inserting new todo:", error);
       res.status(500).json({ error: "Failed to create new todo." });
     } else {
+      // console.log(results);
       res.status(200).json(results);
     }
   });
@@ -89,6 +89,14 @@ app.post("/todos/new", (req, res) => {
 
 app.post("/posts/new", (req, res) => {
   const newPost = req.body;
+  // if (!newTodo.userId || !newTodo.title || !newTodo.completed) {
+  //   res.status(400).send("ha ha ha");
+  //   return;
+  // }
+  // con.connect(function (err) {
+  //   if (err) throw err;
+  // });
+  // Insert the new todo into the database
   const sql = `INSERT INTO posts SET ?`;
   console.log(sql);
   con.query(sql, newPost, (error, results, fields) => {
@@ -114,6 +122,7 @@ app.get("/comments/:postId", (req, res) => {
 app.get(`/posts/:userId`, (req, res) => {
   const userId = req.params.userId;
   const withComments = req.query.withComments;
+  // console.log(withComments);
   let sql;
   if (withComments === true) {
     sql = `select * from posts as p join comments as c on p.userId = ${userId} and p.id = c.postId`;
@@ -122,6 +131,7 @@ app.get(`/posts/:userId`, (req, res) => {
   }
   con.query(sql, function (err, results, fields) {
     if (err) throw err;
+    // console.log(results);
     res.send(JSON.stringify(results));
   });
 });
@@ -146,10 +156,12 @@ app.post("/todos", (req, res) => {
 
 app.post("/todos/delete", (req, res) => {
   const deleteElement = req.body;
+  // console.log(deleteElement);
   // Delete the todo from the database
   const deleteQuery = `DELETE FROM todos WHERE id = ${deleteElement.todoId}`;
   con.connect(function (err) {
     if (err) throw err;
+    // console.log("Connected!");
   });
   con.query(
     deleteQuery,
@@ -167,11 +179,13 @@ app.post("/todos/delete", (req, res) => {
 
 app.post("/posts/delete", (req, res) => {
   const deleteElement = req.body;
-  // Delete the post from the database
+  // console.log(deleteElement);
+  // Delete the todo from the database
   const deletePost = `DELETE FROM posts WHERE id = ${deleteElement.id}`;
   const deleteComments = `DELETE FROM comments WHERE postId = ${deleteElement.userId}`;
   con.connect(function (err) {
     if (err) throw err;
+    // console.log("Connected!");
   });
   con.query(
     deletePost,
@@ -216,6 +230,7 @@ app.post("/register", (req, res) => {
   const values = [username, password, name, email, phone, address, website, company];
   con.connect(function (err) {
     if (err) throw err;
+    // console.log("Connected!");
   });
   con.query(insertUserQuery, values, (err, result) => {
     if (err) {
