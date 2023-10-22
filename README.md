@@ -52,14 +52,16 @@ npm start
 ## Using the Application
 
 
-### Client-Side  #### Login  - To access the client-side application, you have two options: 
-1.  **Login with Existing User:**  
--  Username: Bret
--  Password: 3159 
- 2.  **Create a New User:**  
- - Navigate to the user creation page. 
- - Fill in the required information for the new user, such as username, password, name, email, etc. 
- - Submit the form to create the new user. 
+### Client-Side  
+#### Login  
+- To access the client-side application, you have two options: 
+  1.  **Login with Existing User:**  
+  -  Username: Bret
+  -  Password: 3159 
+   2.  **Create a New User:**  
+   - Navigate to the user creation page. 
+   - Fill in the required information for the new user, such as username, password, name, email, etc. 
+   - Submit the form to create the new user. 
  #### Dashboard Once logged in, you will have access to the following features: 
  -  **User Info:** View user details. 
  -  **Todos:** View the user's to-do list and add or delete todos. 
