@@ -1,4 +1,4 @@
-# Full_Stack_project_6
+# React_MySQL_API_Integration
 
 This full-stack project combines a React front-end with a Node.js back-end to interact with a local MySQL database. While [JSONPlaceholder](https://jsonplaceholder.typicode.com/) initially provides mock data, the server collects and manages the data, ensuring that the project primarily relies on the server and local database for functionality and data storage. [JSONPlaceholder](https://jsonplaceholder.typicode.com/) is a fake online REST API used as the initial data source during setup. 
 ## Project Overview
